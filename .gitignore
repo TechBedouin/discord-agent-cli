@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.discord-cli/
+*.log
+*.tsbuildinfo
+.env
+.env.*

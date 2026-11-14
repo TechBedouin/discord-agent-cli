@@ -1,4 +1,22 @@
-# discord-cli
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/banner-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="./assets/banner-light.svg" />
+    <img src="./assets/banner-dark.svg" alt="discord-agent-cli — Persistent Discord API v10 Gateway Daemon and Loopback CLI" width="100%" />
+  </picture>
+</p>
+
+# discord-agent-cli
+
+<p>
+  <a href="https://github.com/TechBedouin/discord-agent-cli/releases"><img src="https://img.shields.io/github/v/release/TechBedouin/discord-agent-cli?style=flat-square&color=5865F2&label=release" alt="GitHub Release" /></a>
+  <a href="https://www.npmjs.com/package/@techbedouin/discord-agent-cli"><img src="https://img.shields.io/npm/v/%40techbedouin%2Fdiscord-agent-cli?style=flat-square&color=CB3837&label=npm" alt="npm version" /></a>
+  <a href="./package.json"><img src="https://img.shields.io/badge/node-%3E%3D22.0.0-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js >=22.0.0" /></a>
+  <a href="./tsconfig.json"><img src="https://img.shields.io/badge/TypeScript-Strict%20ESM-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript Strict ESM" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-475569?style=flat-square" alt="MIT License" /></a>
+  <a href="https://github.com/TechBedouin/discord-agent-cli/stargazers"><img src="https://img.shields.io/github/stars/TechBedouin/discord-agent-cli?style=flat-square&color=EAB308" alt="GitHub Stars" /></a>
+  <a href="#support--donations"><img src="https://img.shields.io/badge/Sponsor-Support-EA4AAA?style=flat-square&logo=githubsponsors&logoColor=white" alt="Support this project" /></a>
+</p>
 
 Standalone **Node.js (`>=22.0.0`)** ESM TypeScript background daemon and CLI for **Discord API v10**, supporting **Official Bot Mode** (`DISCORD_AUTH_MODE=bot`) and **User Mode** (`DISCORD_AUTH_MODE=user`).
 
@@ -38,11 +56,11 @@ Spawning a fresh Gateway WebSocket per CLI command wastes handshake quota (`sess
 - **Serialized Rate-Limit Compliance & Privilege Isolation:** Concurrent CLI commands share one `X-RateLimit-*` bucket queue and global `429` gate, while `DISCORD_TOKEN` never leaves the daemon process.
 
 ```text
-+---------------------------------------------------------------+
-| CLI Client (`discord-cli` / `src/cli/index.ts`)               |
++---------------------------------------------------------------------+
+| CLI Client (`discord-cli` / `src/cli/index.ts`)                     |
 |  - Discovers `127.0.0.1:<port>` via `$DISCORD_CLI_HOME/daemon.json` |
-|  - Zero `DISCORD_TOKEN` env required for normal commands      |
-+-------------------------------+-------------------------------+
+|  - Zero `DISCORD_TOKEN` env required for normal commands            |
++-------------------------------+-------------------------------------+
                                 | Loopback HTTP/1.1 + NDJSON
                                 v
 +---------------------------------------------------------------+
@@ -60,23 +78,28 @@ Spawning a fresh Gateway WebSocket per CLI command wastes handshake quota (`sess
 
 ## Quickstart Guide
 
-### 1. Prerequisites, Clone & Build
+### 1. Prerequisites & Installation
 Requires **Node.js `>=22.0.0`** (see [./package.json](./package.json)).
+
+**Option A — Install globally from npm (one command, once published):**
+
+```bash
+npm install -g @techbedouin/discord-agent-cli
+```
+
+*(Or run on demand with `npx @techbedouin/discord-agent-cli status --json`. Both `discord-agent-cli` and `discord-cli` binary aliases are installed on `PATH`.)*
+
+**Option B — Clone & build from source:**
 
 ```bash
 git clone https://github.com/TechBedouin/discord-agent-cli.git
 cd discord-agent-cli
 npm install
 npm run build
-```
-
-Optional global binary link (exposes `discord-cli` on `PATH` via `"bin": { "discord-cli": "./dist/cli/index.js" }`):
-
-```bash
 npm link
 ```
 
-Without `npm link`, invoke any command with `node dist/cli/index.js <command>` or `npm run cli -- <command>`. Run tests and typechecks with `npm run typecheck` and `npm test`.
+Without `npm link` or a global install, invoke any command with `node dist/cli/index.js <command>` or `npm run cli -- <command>`. Run tests and typechecks with `npm run typecheck` and `npm test`.
 
 ### 2. Bot Mode Quickstart (Recommended)
 
@@ -172,6 +195,19 @@ Exit codes: `0` success, `1` runtime/IPC/Discord API error, `2` invalid CLI args
 - [./AGENT.md](./AGENT.md) — Mandatory operational safety rules and `--json` workflow checklist for AI agents operating in user mode.
 - [./DESIGN.md](./DESIGN.md) — System design, Gateway state machine, REST rate-limit bucket queue, and IPC architecture.
 - [./ARCHITECTURE_NOTES.md](./ARCHITECTURE_NOTES.md) — Discord Desktop local binary/module boundary investigation and standalone v10 design baseline.
+
+---
+
+## Support & Donations
+
+If this tool saved you some time, a quick ⭐ means a lot! Want priority support or just want to buy us a coffee? Consider donating to help us keep building free, useful tools for everyone.
+
+- **Star the repository:** [github.com/TechBedouin/discord-agent-cli](https://github.com/TechBedouin/discord-agent-cli)
+- **GitHub Sponsors (Coffee & Priority Support):** [github.com/sponsors/TechBedouin](https://github.com/sponsors/TechBedouin) *(also powers the **Sponsor** button in the repository header via [./.github/FUNDING.yml](./.github/FUNDING.yml))*
+<!-- Add Ko-fi / Buy Me a Coffee / Polar / PayPal links here and in ./.github/FUNDING.yml when ready:
+- **Buy Me a Coffee:** [buymeacoffee.com/your_handle](https://buymeacoffee.com/your_handle)
+- **Ko-fi:** [ko-fi.com/your_handle](https://ko-fi.com/your_handle)
+-->
 
 ---
 

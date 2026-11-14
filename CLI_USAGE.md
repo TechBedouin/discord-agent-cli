@@ -18,23 +18,30 @@
   - **User Mode (default for raw tokens):** A raw user account token.
   - **Bot Mode:** A Bot token from the Discord Developer Portal (`Bot` -> `Token`), either prefixed with `"Bot "` or paired with `DISCORD_AUTH_MODE=bot` (enable `MESSAGE CONTENT INTENT` if using default bot intents).
 
-### Build & Global Binary Installation (`npm link`)
-From `<repo-root>`:
+### Build & Global Binary Installation (`npm` / `npm link`)
+Install globally from npm (once published):
+
+```bash
+npm install -g @techbedouin/discord-agent-cli
+```
+
+Or build from source in `<repo-root>`:
 
 ```bash
 npm install
 npm run build
 ```
 
-[package.json](./package.json) declares the global binary mapping:
+[package.json](./package.json) declares global binary mappings for both `discord-agent-cli` and `discord-cli`:
 
 ```json
 "bin": {
+  "discord-agent-cli": "./dist/cli/index.js",
   "discord-cli": "./dist/cli/index.js"
 }
 ```
 
-[src/cli/index.ts](./src/cli/index.ts) (compiled to `dist/cli/index.js`) starts with `#!/usr/bin/env node` on line 1 and uses `fs.realpathSync` in `isDirectCliExecution()` so symlinked global execution works across POSIX and Windows. Link it globally on `PATH` with:
+[src/cli/index.ts](./src/cli/index.ts) (compiled to `dist/cli/index.js`) starts with `#!/usr/bin/env node` on line 1 and uses `fs.realpathSync` in `isDirectCliExecution()` so symlinked global execution works across POSIX and Windows. Link it globally on `PATH` from source with:
 
 ```bash
 npm link

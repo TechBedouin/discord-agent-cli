@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify build and tests
+        run: |
+          npm run typecheck
+          npx tsc -p tsconfig.test.json --noEmit
+          npm test
+
+      - name: Pack npm tarball
+        id: pack
+        run: |
+          TARBALL=$(npm pack --silent | tail -n 1)
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+          ls -lh "$TARBALL"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" "${{ steps.pack.outputs.tarball }}" \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes
+
+      - name: Publish to npm (when NPM_TOKEN secret is set)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            npm publish --access public
+          else
+            echo "NPM_TOKEN secret is not set; skipping automatic npm publish. Add NPM_TOKEN to repository secrets or run 'npm login && npm publish --access public' locally."
+          fi
